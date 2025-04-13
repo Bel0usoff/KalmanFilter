@@ -24,7 +24,7 @@ class ExtendedKalmanFilter
         double Q_v;         // Дисперсия шума v
 
 
-        std::vector <double> GenerateNoise(int samples,double mean, double stddev);
+        double GenerateNoise(double mean, double stddev);
 
     public:
 
