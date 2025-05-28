@@ -10,11 +10,6 @@ int ExtendedKalmanFilter :: GetSize()
     return this->state.size();
 }
 
-int ExtendedKalmanFilter :: GetPointsCount()
-{
-    return this->GPS_values.size();
-}
-
 void ExtendedKalmanFilter :: SetState(int index,double Ox,double Oy,double velocity,double angular_velocity)
 {
     state[index](0) = Ox; //координата по Х
@@ -30,6 +25,10 @@ ExtendedKalmanFilter :: ExtendedKalmanFilter(int number_of_points)
     }
 }
 
+int ExtendedKalmanFilter :: GetPointsCount()
+{
+    this->GPS_values.size();
+}
 
 double ExtendedKalmanFilter :: GenerateNoise(double mean, double stddev)
 {
@@ -58,17 +57,26 @@ void ExtendedKalmanFilter :: PredictStep(Eigen :: VectorXd& cur_state,Eigen :: V
     cur_state(0) = prev_state(0) + prev_state(3)*dt*cos(prev_state(2));//Ox
     cur_state(1) = prev_state(1) + prev_state(3)*dt*cos(prev_state(2));//Oy
     cur_state(2) = prev_state(2) + prev_state(4)*dt;//направление
-    cur_state(3) = prev_state(3);// + GenerateNoise(kMean,kStdDev);//путевая скорость
-    cur_state(4) = prev_state(4) ;//+ GenerateNoise(kMean,kStdDev);//угловая скорость
+    cur_state(3) = prev_state(3); + GenerateNoise(kMean,kStdDev);//путевая скорость
+    cur_state(4) = prev_state(4) + GenerateNoise(kMean,kStdDev);//угловая скорость
     
     
     Eigen :: MatrixXd jacobi(5,5);
-    jacobi <<   1, 0, 0, 0,  dt*cos(prev_state(2)),
-                0, 1, 0, 0,  dt*sin(prev_state(2)),
+    Eigen :: MatrixXd U(5,2);
+    Eigen :: MatrixXd Gamma(1,2);
+    jacobi <<   1, 0, (-1) * prev_state(3)*dt*sin(prev_state(2)), 0,  dt*cos(prev_state(2)),
+                0, 1, prev_state(3)*dt*cos(prev_state(2)), 0,  dt*sin(prev_state(2)),
                 0, 0, 1, dt, 0,
                 0, 0, 0, 1,  0,
-                0, 0, 0, 0,  0;
-                
+                0, 0, 0, 0,  1;
+
+    U <<    0, 0,
+            0, 0,
+            0, 0,
+            sqrt(dt), 0,
+            0, sqrt(dt);
+        
+               
     cur_state = jacobi * cur_state;
 }
  void  ExtendedKalmanFilter :: LoadGpsFromCSV(const std :: string& filename)
@@ -82,10 +90,17 @@ void ExtendedKalmanFilter :: PredictStep(Eigen :: VectorXd& cur_state,Eigen :: V
     while (std::getline(file, line)) {
         std::stringstream ss(line);
         GpsData data;
-        char comma;
+        char comma = ',';
         ss >> data.timestamp >> comma >> data.lat >> comma >> data.lon;
         GPS_values.push_back(data);
         
+    }
+}
+void ExtendedKalmanFilter :: PrintGPS()
+{
+    for(int i = 0;i < this->GetPointsCount();i++)
+    {
+        std :: cout << GPS_values[i].timestamp << '\t' << GPS_values[i].lat << '\t' << GPS_values[i].lon << std :: endl; 
     }
 }
 

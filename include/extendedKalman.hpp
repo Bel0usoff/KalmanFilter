@@ -6,7 +6,7 @@
 
 struct GpsData
 {
-    int timestamp;
+    double timestamp;
     double lat,lon; //широта,долгота
 };
 
@@ -33,6 +33,10 @@ class ExtendedKalmanFilter
         double GenerateNoise(double mean, double stddev);
 
     public:
+
+        void PrintGPS();    
+
+        int GetPointsCount();
 
         int GetSize();
 
