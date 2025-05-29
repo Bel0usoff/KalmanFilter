@@ -120,6 +120,22 @@ void ExtendedKalmanFilter::LoadGpsFromCSV(const std::string& filename)
     }
 }
 
+void ExtendedKalmanFilter :: ExportGpsToCSV (const std :: string& FileNameOut)
+{
+    std :: ofstream file(FileNameOut);
+    if (!file.is_open()) {
+        std::cerr << "Ошибка при открытии файла!" << std::endl;
+        return;
+    }
+
+    file << "timestamp,latitude,longitude"<<"\n";
+    for (int i = 0; i < this->GetSize();i++) 
+    {
+        file << i+1 << "," << state[i](0) << "," << state[i](1)<<"\n";
+    }
+    
+}
+
 void ExtendedKalmanFilter::PrintGPS()
 {
     for (const auto& data : GPS_values)

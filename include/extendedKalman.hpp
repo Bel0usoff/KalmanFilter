@@ -58,4 +58,6 @@ class ExtendedKalmanFilter
         void LoadGpsFromCSV(const std :: string& filename);
 
         void RunEKF();
+
+        void ExportGpsToCSV (const std :: string& FileNameOut);
 };

@@ -7,3 +7,4 @@
 #include <fstream>
 #include <iostream>
 #include "extendedKalman.hpp"
+#include "visualization.hpp"

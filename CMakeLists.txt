@@ -18,6 +18,7 @@ include_directories(
 add_executable(ExtendedKalmanFilter
     src/extendedKalman.cpp
     src/kalman.cpp
+    src/visualization.cpp
 )
 
 # Линковка с Eigen (если требуется)
