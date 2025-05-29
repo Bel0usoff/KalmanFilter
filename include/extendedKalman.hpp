@@ -25,11 +25,10 @@ class ExtendedKalmanFilter
         Eigen :: MatrixXd P;     // Ковариационная матрица
         Eigen :: MatrixXd H;     // Матрица измерений
         Eigen :: MatrixXd R;     // Шум измерений
+        Eigen :: MatrixXd Q;    // Шум модели
+     
         double const dt = 0.1;          // Шаг времени
-        double Q_omega;     // Дисперсия шума ω
-        double Q_v;         // Дисперсия шума v
-
-
+    
         double GenerateNoise(double mean, double stddev);
 
     public:
@@ -46,11 +45,17 @@ class ExtendedKalmanFilter
 
         void InitFilter(double Ox,double Oy,double velocity,double angular_velocity);
 
-        void PredictStep(Eigen :: VectorXd& cur_state,Eigen :: VectorXd& prev_state);
+        void PredictStep(Eigen::VectorXd& cur_state,
+            const Eigen::VectorXd& prev_state);
+
+        void UpdateStep (Eigen::VectorXd& state_vec,
+            const Eigen::Vector2d& z);
 
         Eigen :: VectorXd& GetState(int index_state);
 
         ExtendedKalmanFilter(int number_of_points);
 
         void LoadGpsFromCSV(const std :: string& filename);
+
+        void RunEKF();
 };
