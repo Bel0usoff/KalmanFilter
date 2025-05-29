@@ -40,7 +40,7 @@ void createOverlayPlot(const std::string& csvFile_source,const std::string& csvF
     std::ofstream script("overlay_plot.gp");
     
     script << "set terminal pngcairo size 800,600 enhanced font 'Arial,12'\n"
-           << "set output 'overlay.png'\n"
+           << "set output '/home/konstantin/kalman_filter/program/overlay.png'\n"
            << "set title 'Траектория движения (GPS)'\n"
            << "set xlabel 'Долгота'\n"
            << "set ylabel 'Широта'\n"

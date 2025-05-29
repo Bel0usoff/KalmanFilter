@@ -15,8 +15,8 @@ int main()
     } */
 
     EKF.ExportGpsToCSV("/home/konstantin/kalman_filter/program/trajectory_filtered.csv");
-    plot_gps_trajectory("/home/konstantin/kalman_filter/program/trajectory.csv","source");
-    plot_gps_trajectory("/home/konstantin/kalman_filter/program/trajectory_filtered.csv","filter");
+    plot_gps_trajectory("/home/konstantin/kalman_filter/program/trajectory.csv","/home/konstantin/kalman_filter/program/source");
+    plot_gps_trajectory("/home/konstantin/kalman_filter/program/trajectory_filtered.csv","/home/konstantin/kalman_filter/program/filter");
 
 
     createOverlayPlot("/home/konstantin/kalman_filter/program/trajectory.csv","/home/konstantin/kalman_filter/program/trajectory_filtered.csv");
