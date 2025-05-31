@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <string>
 #include <cstdlib>
+#include <chrono>
 
 using namespace std;
 
@@ -36,13 +37,17 @@ class GPSGenerator {
     double course; // Текущий курс (радианы)
 
 public:
-    GPSGenerator(const SimulationParams& p) 
-        : params(p),
-          noiseDist(0.0, p.noiseLevel / 111320.0),
-          speedVarDist(-p.speedVar, p.speedVar),
-          courseChangeDist(-0.05, 0.05),
-          currentPoint{p.startLat, p.startLon, 0.0},
-          course(0.0) {}
+   GPSGenerator(const SimulationParams& p)
+
+: params(p),
+generator(static_cast<unsigned long>(
+chrono::system_clock::now().time_since_epoch().count())),
+noiseDist(0.0, p.noiseLevel / 111320.0),
+courseChangeDist(-0.05, 0.05),
+currentPoint{p.startLat, p.startLon, 0.0},
+
+
+course(0.0) {} 
 
     GPSPoint generateNextPoint() {
         currentPoint.timestamp += params.interval;

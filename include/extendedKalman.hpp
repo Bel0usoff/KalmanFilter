@@ -27,7 +27,7 @@ class ExtendedKalmanFilter
         Eigen :: MatrixXd R;     // Шум измерений
         Eigen :: MatrixXd Q;    // Шум модели
      
-        double const dt = 0.1;          // Шаг времени
+        double const dt = 1;          // Шаг времени
     
         double GenerateNoise(double mean, double stddev);
 

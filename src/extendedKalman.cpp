@@ -7,9 +7,9 @@ ExtendedKalmanFilter::ExtendedKalmanFilter(int number_of_points)
 {
     state.reserve(number_of_points);
 
-    P = Eigen::MatrixXd::Identity(5, 5) * 0.1;  // начальная ковариация
-    Q = Eigen::MatrixXd::Identity(2, 2) * 0.01; // шум управления (2×2!)
-    R = Eigen::MatrixXd::Identity(2, 2) * 0.05; // шум измерений (GPS)
+    P = Eigen::MatrixXd::Identity(5, 5) * 2;  // начальная ковариация
+    Q = Eigen::MatrixXd::Identity(2, 2) * 0.05; // шум управления (2×2!)
+    R = Eigen::MatrixXd::Identity(2, 2) * 0.01; // шум измерений (GPS)
 
     H = Eigen::MatrixXd(2, 5); // матрица наблюдения
     H << 1, 0, 0, 0, 0,
@@ -84,7 +84,7 @@ void ExtendedKalmanFilter::RunEKF()
         return;
     }
 
-    InitFilter(GPS_values[0].lat, GPS_values[0].lon, 1.0, 0.0);
+    InitFilter(GPS_values[0].lat, GPS_values[0].lon, 0.0, 0.0);
     Eigen::VectorXd estimated_state = state[0];
 
     int N = GPS_values.size();
