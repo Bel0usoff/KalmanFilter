@@ -20,7 +20,7 @@ struct SimulationParams {
     double startLat = 55.752220;  // Стартовая широта (Москва)
     double startLon = 37.615560;  // Стартовая долгота
     double speed = 20.0;          // Средняя скорость (м/с)
-    double speedVar = 5.0;        // Разброс скорости
+    double speedVar = 0;        // Разброс скорости
     double noiseLevel = 2.0;      // Уровень шума (м)
     double duration = 300.0;      // Длительность полета (сек)
     double interval = 1.0;        // Интервал между точками (сек)
@@ -43,7 +43,7 @@ public:
 generator(static_cast<unsigned long>(
 chrono::system_clock::now().time_since_epoch().count())),
 noiseDist(0.0, p.noiseLevel / 111320.0),
-courseChangeDist(-0.05, 0.05),
+courseChangeDist(-0.1, 0.1),
 currentPoint{p.startLat, p.startLon, 0.0},
 
 

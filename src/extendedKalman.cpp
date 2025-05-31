@@ -6,11 +6,12 @@ const double kStdDev = 0.001;
 ExtendedKalmanFilter::ExtendedKalmanFilter(int number_of_points)
 {
     state.reserve(number_of_points);
-
+    
     P = Eigen::MatrixXd::Identity(5, 5) * 2;  // начальная ковариация
     Q = Eigen::MatrixXd::Identity(2, 2) * 0.05; // шум управления (2×2!)
     R = Eigen::MatrixXd::Identity(2, 2) * 0.01; // шум измерений (GPS)
 
+    
     H = Eigen::MatrixXd(2, 5); // матрица наблюдения
     H << 1, 0, 0, 0, 0,
          0, 1, 0, 0, 0;
@@ -18,7 +19,7 @@ ExtendedKalmanFilter::ExtendedKalmanFilter(int number_of_points)
 
 
 
-void ExtendedKalmanFilter::InitFilter(double Ox, double Oy, double velocity, double angular_velocity)
+void ExtendedKalmanFilter::InitFilter(double Ox,double Oy,double velocity,double angular_velocity)
 {
     Eigen::VectorXd init_state(5);
     init_state << Ox, Oy, 0.0, velocity, angular_velocity;
@@ -40,8 +41,8 @@ void ExtendedKalmanFilter::PredictStep(Eigen::VectorXd& cur_state,
     cur_state(0) = x + v * dt * cos(theta);
     cur_state(1) = y + v * dt * sin(theta);
     cur_state(2) = theta + omega * dt;
-    cur_state(3) = v + GenerateNoise(kMean, kStdDev);
-    cur_state(4) = omega + GenerateNoise(kMean, kStdDev);
+    cur_state(3) = v;///GenerateNoise(kMean, kStdDev);
+    cur_state(4) = omega;// + GenerateNoise(kMean, kStdDev);
 
     // Якобиан
     Eigen::MatrixXd F(5, 5);
@@ -86,8 +87,11 @@ void ExtendedKalmanFilter::RunEKF()
         return;
     }
 
-    InitFilter(GPS_values[0].lat, GPS_values[0].lon, 0.0, 0.0);
+
+     InitFilter(GPS_values[0].lat, GPS_values[0].lon, 0.0, 0.0);
+   
     Eigen::VectorXd estimated_state = state[0];
+
 
     int N = GPS_values.size();
     for (int i = 1; i < N; ++i)
