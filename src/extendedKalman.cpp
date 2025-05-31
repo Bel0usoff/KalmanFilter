@@ -16,6 +16,8 @@ ExtendedKalmanFilter::ExtendedKalmanFilter(int number_of_points)
          0, 1, 0, 0, 0;
 }
 
+
+
 void ExtendedKalmanFilter::InitFilter(double Ox, double Oy, double velocity, double angular_velocity)
 {
     Eigen::VectorXd init_state(5);
